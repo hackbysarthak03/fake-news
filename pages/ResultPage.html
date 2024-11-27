@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Detection Results</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/result.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>News Detection Results</h1>
+
+    <!-- Overall Truth and Fallacy -->
+    <div class="result">
+      {{sentence}}
+    </div>
+
+    <!-- Overall Result -->
+    <div class="overall true">
+      The news is classified as&nbsp;
+      <strong>
+        {% if res == 0 %}
+        Fake!
+        {% else %}
+        Correct!
+        {% endif %}
+
+      </strong>
+    </div>
+
+    <!-- Results from Different ML Models -->
+    <div class="models-section">
+      <h2>Model Predictions</h2>
+
+      <div class="model-result">
+        <h3>Model: Decision Tree Classifier</h3>
+        <p>Truth: 88.4%, Fallacy: 11.6%</p>
+      </div>
+
+     
+    </div>
+  </div>
+</body>
+</html>

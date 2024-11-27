@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="forms-section">
+      <h1>Sign-Up!</h1>
+      
+      <!-- Form 1: Text Input -->
+      <form method="post">
+
+        {% csrf_token %}
+
+        <label for="username-input">Username:</label>
+        <input type="text" name="username" required>
+        <label for="email-input">Email:</label>
+        <input type="email" name="email" required>
+        <label for="email-input">Password:</label>
+        <input type="password" name="psw" required>
+        <div class="p-info">
+            <ul>
+                <li>Your Password can't be too similar to your other personal account.</li>
+                <li>Your Password must contain atleast 8 characters.</li>
+                <li>Your Password can't be a comonly use password.</li>
+            </ul>
+        </div>
+        <label for="email-input">Confirm Password:</label>
+        <input type="text" name="cpsw" required>
+        <button type="submit">Register</button>
+      </form>
+      <div class="footer">
+        Already have an account?&nbsp;&nbsp;<a href="/sign-in/" class="link">Login Now</a>
+      </div>
+      
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="forms-section">
+      <h1>Welcome Back!</h1>
+      
+      <!-- Form 1: Text Input -->
+      <form method="post">
+
+        {% csrf_token %}
+
+        <label for="username-input">Username:</label>
+        <input type="text" name="username" required>
+        <label for="email-input">Password:</label>
+        <input type="password" name="psw" required>
+        <button type="submit">Sign In</button>
+      </form>
+      <div class="footer">
+        Don't have an account?&nbsp;&nbsp;<a href="/register/" class="link">Register Now</a>
+      </div>
+      
+    </div>
+  </div>
+
+{% endblock %}

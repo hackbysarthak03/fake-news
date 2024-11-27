@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reliable & Accurate Predictions</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+  <!-- Navbar Section -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <h1>Fake News Detector</h1>
+    </div>
+    <div class="navbar-links">
+      <a href="/dashboard/" class="btn">Dashboard</a>
+      <a href="/logout/" class="btn btn-logout">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Text and Image Section -->
+    <div class="section-content">
+      <div class="text-content">
+        <h1>Reliable & Accurate Predictions</h1>
+        <p>
+          AI, the theory and development of computer systems able to perform tasks normally requiring human intelligence, such as visual perception, speech recognition, decision-making, and translation between languages.
+        </p>
+        <p>
+          This system is a conjunction of AI and NLP (Natural Language Prediction) for fake news prediction. It employs the use of machine learning models trained with labeled data to classify news into two broad categories: Real and Fake news.
+        </p>
+      </div>
+      <div class="image-content">
+        <img src="https://res.cloudinary.com/doy34nvkz/image/upload/v1732651927/men_ap9zze.png" alt="Man reading newspaper">
+      </div>
+    </div>
+
+    <!-- Call-to-Action Section -->
+    <div class="cta-section">
+      <h2>Want To Analyze News?</h2>
+    </div>
+
+    <!-- Detection Forms Section -->
+    <div class="forms-section">
+      <h1>Detection Tool</h1>
+      
+      <!-- Form 1: Text Input -->
+      <form action="/text-detection/" method="post">
+        {% csrf_token %}
+        <label for="text-input">Enter Text:</label>
+        <input type="text" id="text-input" name="my-sentence" placeholder="Type here..." required>
+        <button type="submit">Detect Fake/True</button>
+      </form>
+      
+      <!-- Form 2: Image Upload -->
+      <form action="/image-detection/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image-upload">Upload Image:</label>
+        <input type="file" id="image-upload" name="image" accept="image/*" required>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
