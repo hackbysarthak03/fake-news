@@ -26,6 +26,7 @@ urlpatterns = [
     path('text-detection/', views.textDetection),
     path('text-detection', views.textDetection),
     path('image-detection/', views.imageDetection),
-    path('dashboard/', views.dashboard)
+    path('dashboard/', views.dashboard),
+    path('delete/<id>/', views.deleteHistory),
 
 ]

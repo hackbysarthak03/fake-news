@@ -19,7 +19,7 @@ def signin(request):
             print(user)
             login_user = authenticate(username = user_username, password = user_psw)
             login(request, login_user)
-            return redirect('/dashboard/')
+            return redirect('/')
         except:
             return HttpResponse('Credentials Match Failed! - Try Logging In using correct credentials -- ')
         
@@ -79,3 +79,5 @@ def changePassword(request):
 def signOut(request):
     logout(request)
     return redirect('/')
+
+

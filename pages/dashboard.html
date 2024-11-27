@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background-color: #c94c4c; /* Navbar background color */
+            background-color: #c94c4c;
+            /* Navbar background color */
             color: white;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -67,90 +69,114 @@
 
         .card {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
             background-color: white;
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Ensures delete icon stays in position */
         }
 
         .card .details {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            margin-right: 15px;
+            margin-bottom: 10px;
+            /* Adds spacing between text and footer */
         }
 
-        .card .details img {
-            max-width: 100%;
-            max-height: 150px;
+        .card .details p {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .card .details .label {
+            display: inline-block;
+            font-weight: bold;
+            padding: 5px 10px;
             border-radius: 5px;
             margin-bottom: 10px;
         }
 
-        .card .details p {
-            margin: 0;
+        .card .details .label.fake {
+            background-color: #f44336;
+            color: white;
         }
 
-        .card .details .date {
+        .card .details .label.real {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .card .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card .footer .date {
             font-size: 0.9em;
             color: gray;
         }
 
-        .card .delete-icon {
+        .card .footer .delete-icon {
             color: #dc3545;
             font-size: 1.2em;
             cursor: pointer;
+            transition: color 0.2s ease;
         }
 
-        .card .delete-icon:hover {
+        .card .footer .delete-icon:hover {
             color: #b02a37;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navbar -->
     <div class="navbar">
-        <div class="brand">Hello {{request.user.username}}</div>
+        <div class="brand">Fake News Detector</div>
         <div class="btn">
-            <button onclick="returnToHome()">Detect News</button>
-            <button class="logout" onclick="logout()">Logout</button>
+            <button onclick="returnToHome()">Home&nbsp;<i class="fa-solid fa-house"></i></button>
+            <button class="logout" onclick="logout()">Logout&nbsp;<i class="fa-solid fa-right-from-bracket"></i></button>
         </div>
     </div>
 
     <!-- Search History Cards -->
     <div class="history-container">
-        <!-- Card with Text -->
+        {% for data in dataset %}
         <div class="card">
             <div class="details">
-                <p>Search Text: <strong>Example Query 1</strong></p>
-                <p class="date">Date: 2024-11-26</p>
+                <!-- Badge for True/False -->
+                 {% if data.result == False %}
+                <div style="display: inline-block; padding: 5px 10px; background-color: #f36c2d; color: white; border-radius: 5px; font-weight: bold;">
+                    Fake
+                </div>
+                {% else %}
+                <div style="display: inline-block; padding: 5px 10px; background-color: #179146; color: white; border-radius: 5px; font-weight: bold;">
+                    Real
+                </div>
+                {% endif %}
+                <!-- News Content -->
+                <p>
+                    <strong>News:&nbsp;</strong>
+                    {{ data.news|slice:":50" }}...
+                </p>
             </div>
-            <i class="fas fa-trash delete-icon" onclick="deleteCard(this)"></i>
+        
+            <!-- Footer Section -->
+            <div class="footer">
+                <span class="date">{{ data.created_on }}</span>
+                <a href="/delete/{{data.id}}/"><i class="fas fa-trash delete-icon"></i></a>
+            </div>
         </div>
-
-        <!-- Card with Image -->
+        {% empty %}
         <div class="card">
-            <div class="details">
-                <img src="https://via.placeholder.com/150" alt="Search Image">
-                <p class="date">Date: 2024-11-25</p>
-            </div>
-            <i class="fas fa-trash delete-icon" onclick="deleteCard(this)"></i>
+            History is Empty
         </div>
-
-        <!-- Card with Both Text and Image -->
-        <div class="card">
-            <div class="details">
-                <img src="https://via.placeholder.com/150" alt="Search Image">
-                <p>Search Text: <strong>Example Query 2</strong></p>
-                <p class="date">Date: 2024-11-24</p>
-            </div>
-            <i class="fas fa-trash delete-icon" onclick="deleteCard(this)"></i>
-        </div>
+        {% endfor %}
     </div>
 
     <script>
@@ -168,11 +194,12 @@
 
         // Function to delete a card
         function deleteCard(icon) {
-            const card = icon.parentElement;
+            const card = icon.parentElement.parentElement;
             card.remove(); // Removes the card from the DOM
             alert("Card deleted!");
         }
     </script>
 
 </body>
+
 </html>

@@ -1,3 +1,6 @@
+
+# Importing Libraries and other Utilities
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import os
@@ -11,13 +14,19 @@ import re
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from accounts.models import Info
+
+# Using Models
 port_stem = PorterStemmer()
 vectorization = TfidfVectorizer()
 
+# Loading Models
 vector_form = pickle.load(open(os.path.join(settings.BASE_DIR, 'fakenews', 'vector.pkl'), 'rb'))
 load_model = pickle.load(open(os.path.join(settings.BASE_DIR, 'fakenews', 'model.pkl'), 'rb'))
 
+# Using Pytesseract
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 
 def stemming(content):
     con=re.sub('[^a-zA-Z]', ' ', content)
@@ -52,6 +61,13 @@ def textDetection(request):
             res = 1
         else:
             res = 0
+
+        info = Info.objects.create(
+            user = request.user,
+            news = text,
+            result = res
+        )
+        info.save()
         
         return render(request, 'ResultPage.html', {
             'res':res,
@@ -90,6 +106,15 @@ def imageDetection(request):
                 res = 1
             else:
                 res = 0
+
+            info = Info.objects.create(
+            user = request.user,
+            news = extracted_text,
+            result = res
+            )
+
+            info.save()
+        
         
             return render(request, 'ResultPage.html', {
                 'res':res,
@@ -101,7 +126,16 @@ def imageDetection(request):
     else:
         return HttpResponse("Invalid request method.", status=405)
 
-
 @login_required(login_url='/sign-in/') 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    data = Info.objects.filter(user = request.user).order_by('-created_on')
+    
+    return render(request, 'dashboard.html', {
+        'dataset':data
+    })
+
+def deleteHistory(request, id):
+    info = Info.objects.filter(id = id).first()
+    info.delete()
+
+    return redirect('/dashboard/')

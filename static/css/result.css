@@ -83,3 +83,21 @@ h1 {
 .model-result p {
   font-size: 1rem;
 }
+
+
+
+.save-btn{
+  background-color: #4388ff; 
+  padding: 10px; 
+  font-weight: bold;
+  display: flex; justify-content: center; align-items: center;
+  color: white;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  transition: .3s ease-in-out;
+}
+
+.save-btn:hover{
+  background-color: #1667f4;
+  cursor: pointer;
+}
